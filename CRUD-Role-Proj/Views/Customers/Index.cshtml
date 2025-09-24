@@ -1,0 +1,125 @@
+﻿
+@using System.Security.Claims
+@model IEnumerable<CRUD_Role_Proj.Models.Customer>
+@{
+    ViewData["Title"] = "Customers List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .page-toolbar {
+        background: transparent;
+        color: inherit;
+        border: 1px solid #674636;
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+    }
+    .page-toolbar h2 { color: #8b2e2e; }
+    .page-toolbar .role-badge { background: rgba(231,123,123,.12); color: #8b2e2e; border: 1px solid #674636; }
+    .page-toolbar .dropdown-menu { min-width: 12rem; }
+    .page-toolbar .dropdown-item i { width: 1rem; }
+    .table thead th { white-space: nowrap; }
+    .table thead tr {
+        background: linear-gradient(135deg, #674636, #ff9a66);
+        color: #fff;
+    }
+    .table tbody td { color: #5a3b24; }
+    .table tbody tr:hover { background: rgba(231, 123, 123, 0.08); }
+    .badge-role { background: rgba(231,123,123,.2); color: #9b2d2d; }
+    .btn-outline-brown { color: #8b5e3c; border-color: #8b5e3c; }
+    .btn-outline-brown:hover { background: #8b5e3c; color: #fff; }
+    .btn-outline-brown-2 { color: #a97449; border-color: #a97449; }
+    .btn-outline-brown-2:hover { background: #a97449; color: #fff; }
+    @@media (max-width: 576px) {
+        .page-toolbar h2 { font-size: 1.25rem; margin-bottom: 8px; }
+    }
+</style>
+
+<div class="page-toolbar d-flex flex-column flex-sm-row align-items-sm-center justify-content-between">
+    <h2 class="mb-2 mb-sm-0">Customers List</h2>
+    <div class="dropdown ms-sm-3">
+        <button class="btn btn-sm btn-light role-badge dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-badge me-2"></i>
+            <span class="me-1">@User.FindFirst(ClaimTypes.Role)?.Value</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <li>
+                <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+</div>
+@* 
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p> *@
+
+@if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-app"><i class="bi bi-plus-circle me-1"></i>Create New</a>
+    </p>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>National ID</th>
+            <th>Birth Date</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Governorate</th>
+            <th>District</th>
+            <th>Village</th>
+            <th>Salary</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+                <td>@item.FullName</td>
+                <td>@item.NationalId</td>
+                <td>@item.BirthDate?.ToString("yyyy-MM-dd")</td>
+                <td>@item.Age</td>
+                @* <td>@item.Gender</td> *@
+                <td>@item.Gender?.Name</td>
+
+                <td>@item.Governorate?.Name</td>
+                <td>@item.District?.Name</td>
+                <td>@item.Village?.Name</td>
+                <td>@item.Salary</td>
+
+            @* <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a> |
+                <a asp-action="Print" asp-route-id="@item.Id" class="btn btn-sm btn-info">Print</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+            </td> *@
+
+                <td>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-brown"><i class="bi bi-pencil-square me-1"></i>Edit</a>
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    {
+                        <a asp-action="Print" asp-route-id="@item.Id" class="btn btn-sm btn-outline-brown-2"><i class="bi bi-printer me-1"></i>Print</a>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash3 me-1"></i>Delete</a>
+                    }
+                </td>
+        </tr>
+}
+
+    </tbody>
+</table>
+

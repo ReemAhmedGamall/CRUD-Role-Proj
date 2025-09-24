@@ -1,0 +1,343 @@
+﻿
+@model CRUD_Role_Proj.Models.Customer
+@{
+    ViewData["Title"] = "Print Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .print-header {
+        background: transparent;
+        color: #8b2e2e;
+        padding: 20px;
+        border: 2px solid #674636;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .print-header h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+    
+    .print-header .subtitle {
+        margin-top: 8px;
+        opacity: 0.9;
+        font-size: 1rem;
+    }
+    
+    .print-card {
+        border: 1px solid #f7c3b3;
+        border-radius: 14px;
+        background: #fffaf8;
+        box-shadow: 0 4px 12px rgba(231, 123, 123, 0.1);
+        overflow: hidden;
+    }
+    
+    .print-card .card-header {
+        background: linear-gradient(135deg, #674636, #ff9a66);
+        color: #fff;
+        padding: 16px 20px;
+        border-bottom: 0;
+    }
+    
+    .print-card .card-header h4 {
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+    
+    .print-card .card-body {
+        padding: 25px;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .info-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        background: #fff;
+        border: 1px solid #f1b0a1;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    
+    .info-item:hover {
+        background: rgba(231, 123, 123, 0.05);
+        border-color: #e77b7b;
+    }
+    
+    .info-item .icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(231, 123, 123, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        color: #8b2e2e;
+        font-size: 1.1rem;
+    }
+    
+    .info-item .content {
+        flex: 1;
+    }
+    
+    .info-item .label {
+        font-size: 0.85rem;
+        color: #8b2e2e;
+        font-weight: 500;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .info-item .value {
+        font-size: 1rem;
+        color: #5a3b24;
+        font-weight: 600;
+    }
+    
+    .print-actions {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #f1b0a1;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .btn-print {
+        background: linear-gradient(135deg, #674636, #ff9a66);
+        color: #fff !important;
+        border: 0;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(231, 123, 123, 0.25);
+        transition: all 0.2s ease;
+    }
+    
+    .btn-print:hover {
+        filter: brightness(0.95);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(231, 123, 123, 0.3);
+        color: #fff !important;
+    }
+    
+    .btn-back {
+        background: transparent;
+        color: #8b5e3c;
+        border: 1px solid #8b5e3c;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-back:hover {
+        background: #8b5e3c;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+    
+    /* Print-specific styles */
+    @@media print {
+        .print-actions {
+            display: none !important;
+        }
+        
+        .print-card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+        }
+        
+        .print-header {
+            background: #f8f9fa !important;
+            color: #333 !important;
+            border: 1px solid #ddd;
+        }
+        
+        .print-card .card-header {
+            background: #f8f9fa !important;
+            color: #333 !important;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .info-item {
+            border: 1px solid #ddd;
+            background: #fff !important;
+        }
+        
+        .info-item .icon {
+            background: #f8f9fa !important;
+            color: #666 !important;
+        }
+        
+        .info-item .label {
+            color: #666 !important;
+        }
+        
+        .info-item .value {
+            color: #333 !important;
+        }
+        
+        body {
+            font-size: 12px;
+        }
+        
+        .print-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .info-item {
+            padding: 8px 12px;
+        }
+    }
+    
+    @@media (max-width: 768px) {
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .print-actions {
+            flex-direction: column;
+        }
+        
+        .print-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="print-header">
+    <h2><i class="bi bi-person-badge me-2"></i>Customer Details</h2>
+    <div class="subtitle">Complete Customer Information Report</div>
+</div>
+
+<div class="print-card">
+    <div class="card-header">
+        <h4><i class="bi bi-file-text me-2"></i>Personal Information</h4>
+    </div>
+    <div class="card-body">
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="icon">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div class="content">
+                    <div class="label">Full Name</div>
+                    <div class="value">@Model.FullName</div>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="icon">
+                    <i class="bi bi-card-text"></i>
+                </div>
+                <div class="content">
+                    <div class="label">National ID</div>
+                    <div class="value">@Model.NationalId</div>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="icon">
+                    <i class="bi bi-gender-ambiguous"></i>
+                </div>
+                <div class="content">
+                    <div class="label">Gender</div>
+                    <div class="value">@(Model.Gender?.Name ?? "Not specified")</div>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="icon">
+                    <i class="bi bi-calendar-date"></i>
+                </div>
+                <div class="content">
+                    <div class="label">Birth Date</div>
+                    <div class="value">@(Model.BirthDate?.ToString("yyyy-MM-dd") ?? "Not specified")</div>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="icon">
+                    <i class="bi bi-clock"></i>
+                </div>
+                <div class="content">
+                    <div class="label">Age</div>
+                    <div class="value">@(Model.Age?.ToString() ?? "Not calculated")</div>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="icon">
+                    <i class="bi bi-cash-coin"></i>
+                </div>
+                <div class="content">
+                    <div class="label">Salary</div>
+                    <div class="value">@(Model.Salary?.ToString("C") ?? "Not specified")</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <h5 class="text-muted mb-3"><i class="bi bi-geo-alt me-2"></i>Location Information</h5>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Governorate</div>
+                        <div class="value">@(Model.Governorate?.Name ?? "Not specified")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-building-fill"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">District</div>
+                        <div class="value">@(Model.District?.Name ?? "Not specified")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-house"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Village</div>
+                        <div class="value">@(Model.Village?.Name ?? "Not specified")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="print-actions">
+            <button onclick="window.print()" class="btn btn-print">
+                <i class="bi bi-printer me-2"></i>Print Document
+            </button>
+            <a asp-action="Index" class="btn btn-back">
+                <i class="bi bi-arrow-left me-2"></i>Back to List
+            </a>
+        </div>
+    </div>
+</div>
+

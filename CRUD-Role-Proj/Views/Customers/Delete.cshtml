@@ -1,0 +1,326 @@
+﻿
+@model CRUD_Role_Proj.Models.Customer
+@{
+    ViewData["Title"] = "Delete Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .delete-header {
+        background: transparent;
+        color: #8b2e2e;
+        padding: 20px;
+        border: 2px solid #dc3545;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .delete-header h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+    
+    .delete-header .subtitle {
+        margin-top: 8px;
+        opacity: 0.9;
+        font-size: 1rem;
+        color: #dc3545;
+    }
+    
+    .warning-card {
+        border: 1px solid #f7c3b3;
+        border-radius: 14px;
+        background: #fffaf8;
+        box-shadow: 0 4px 12px rgba(231, 123, 123, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    .warning-card .card-header {
+        background: linear-gradient(135deg, #dc3545, #ff6b6b);
+        color: #fff;
+        padding: 16px 20px;
+        border-bottom: 0;
+    }
+    
+    .warning-card .card-header h4 {
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+    
+    .warning-card .card-body {
+        padding: 25px;
+    }
+    
+    .warning-alert {
+        background: rgba(220, 53, 69, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.3);
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .warning-alert .icon {
+        font-size: 1.5rem;
+        color: #dc3545;
+        margin-right: 12px;
+    }
+    
+    .warning-alert .text {
+        color: #8b2e2e;
+        font-weight: 500;
+    }
+    
+    .customer-details {
+        background: #fff;
+        border: 1px solid #f1b0a1;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .customer-details h5 {
+        color: #8b2e2e;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    
+    .info-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 12px;
+        background: #fffaf8;
+        border: 1px solid #f1b0a1;
+        border-radius: 6px;
+    }
+    
+    .info-item .icon {
+        width: 32px;
+        height: 32px;
+        background: rgba(231, 123, 123, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        color: #8b2e2e;
+        font-size: 0.9rem;
+    }
+    
+    .info-item .content {
+        flex: 1;
+    }
+    
+    .info-item .label {
+        font-size: 0.8rem;
+        color: #8b2e2e;
+        font-weight: 500;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .info-item .value {
+        font-size: 0.9rem;
+        color: #5a3b24;
+        font-weight: 600;
+    }
+    
+    .delete-actions {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #f1b0a1;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn-delete {
+        background: linear-gradient(135deg, #dc3545, #ff6b6b);
+        color: #fff !important;
+        border: 0;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+        transition: all 0.2s ease;
+        font-size: 1rem;
+    }
+    
+    .btn-delete:hover {
+        filter: brightness(0.95);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(220, 53, 69, 0.3);
+        color: #fff !important;
+    }
+    
+    .btn-cancel {
+        background: transparent;
+        color: #8b5e3c;
+        border: 1px solid #8b5e3c;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        font-size: 1rem;
+    }
+    
+    .btn-cancel:hover {
+        background: #8b5e3c;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+    
+    @@media (max-width: 768px) {
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .delete-actions {
+            flex-direction: column;
+        }
+        
+        .delete-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="delete-header">
+    <h2><i class="bi bi-exclamation-triangle me-2"></i>Delete Customer</h2>
+    <div class="subtitle">This action cannot be undone</div>
+</div>
+
+<div class="warning-card">
+    <div class="card-header">
+        <h4><i class="bi bi-trash3 me-2"></i>Confirmation Required</h4>
+    </div>
+    <div class="card-body">
+        <div class="warning-alert">
+            <i class="bi bi-exclamation-triangle icon"></i>
+            <div class="text">
+                <strong>Warning:</strong> You are about to permanently delete this customer record. This action cannot be undone and all associated data will be lost.
+            </div>
+        </div>
+        
+        <div class="customer-details">
+            <h5><i class="bi bi-person-badge me-2"></i>Customer Information</h5>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Full Name</div>
+                        <div class="value">@Model.FullName</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-card-text"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">National ID</div>
+                        <div class="value">@Model.NationalId</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-gender-ambiguous"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Gender</div>
+                        <div class="value">@(Model.Gender?.Name ?? "Not specified")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-calendar-date"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Birth Date</div>
+                        <div class="value">@(Model.BirthDate?.ToString("yyyy-MM-dd") ?? "Not specified")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Age</div>
+                        <div class="value">@(Model.Age?.ToString() ?? "Not calculated")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-cash-coin"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Salary</div>
+                        <div class="value">@(Model.Salary?.ToString("C") ?? "Not specified")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Governorate</div>
+                        <div class="value">@(Model.Governorate?.Name ?? "Not specified")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-building-fill"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">District</div>
+                        <div class="value">@(Model.District?.Name ?? "Not specified")</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="icon">
+                        <i class="bi bi-house"></i>
+                    </div>
+                    <div class="content">
+                        <div class="label">Village</div>
+                        <div class="value">@(Model.Village?.Name ?? "Not specified")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="delete-actions">
+                <button type="submit" class="btn btn-delete">
+                    <i class="bi bi-trash3 me-2"></i>Confirm Delete
+                </button>
+                <a asp-action="Index" class="btn btn-cancel">
+                    <i class="bi bi-arrow-left me-2"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+

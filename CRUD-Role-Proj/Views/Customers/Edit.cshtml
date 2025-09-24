@@ -1,0 +1,146 @@
+﻿
+@model CRUD_Role_Proj.Models.Customer
+@{
+    ViewData["Title"] = "Edit Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .page-toolbar { background: transparent; border: 1px solid #674636; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; }
+    .page-toolbar h2 { color: #8b2e2e; margin: 0; }
+    .card-themed { border: 1px solid #f7c3b3; border-radius: 14px; }
+    .card-themed .card-header { background: linear-gradient(135deg, #674636, #ff9a66); color: #fff; border-bottom: 0; border-top-left-radius: 14px; border-top-right-radius: 14px; }
+    .card-themed .form-label { color: #5a3b24; }
+    .input-group-text { color: #8b2e2e; background: rgba(231,123,123,.1); }
+    .btn-app { background-image: linear-gradient(135deg, #674636, #ff9a66); color: #fff !important; border: 0; box-shadow: 0 6px 16px rgba(231,123,123,.25); }
+    .btn-app:hover { filter: brightness(0.98); color: #fff !important; }
+    .select-themed { border-color: #f1b0a1; background-color: #fffaf8; color: #5a3b24; border-radius: .5rem; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238b2e2e'%3e%3cpath d='M3.204 5.5a.5.5 0 0 1 .638-.057l.07.057L8 9.086l4.088-3.586a.5.5 0 0 1 .765.638l-.057.07-4.5 3.95a.5.5 0 0 1-.638.057l-.07-.057-4.5-3.95a.5.5 0 0 1 0-.764z'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right .75rem center; background-size: 16px 12px; padding-right: 2.25rem; box-shadow: 0 1px 2px rgba(0,0,0,.03) inset; }
+    .select-themed:focus { border-color: #674636; box-shadow: 0 0 0 .25rem rgba(231,123,123,.25); background-color: #fff; }
+    .select-themed option { background-color: #fff7f5; color: #5a3b24; }
+    .select-themed option:checked { background-color: #ffe2da; }
+</style>
+
+<div class="page-toolbar d-flex align-items-center justify-content-between">
+    <h2>Edit Customer</h2>
+    <div>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back</a>
+    </div>
+    </div>
+
+<div class="card card-themed shadow-sm">
+    <div class="card-header">
+        <i class="bi bi-pencil-square me-2"></i> Edit Details
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" class="row g-3">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="col-md-6">
+                <label asp-for="FullName" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input asp-for="FullName" class="form-control" />
+                </div>
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="NationalId" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                    <input asp-for="NationalId" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Salary" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-cash-coin"></i></span>
+                    <input asp-for="Salary" class="form-control" type="number" min="5000" max="20000" />
+                </div>
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Governorate</label>
+                <select asp-for="GovernorateId" asp-items="ViewBag.Governorates" class="form-select select-themed" id="GovernorateId">
+                    <option value=""> Select Governorate </option>
+                </select>
+                <span asp-validation-for="GovernorateId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">District</label>
+                <select asp-for="DistrictId" asp-items="ViewBag.Districts" class="form-select select-themed" id="DistrictId">
+                    <option value=""> Select District </option>
+                </select>
+                <span asp-validation-for="DistrictId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Village</label>
+                <select asp-for="VillageId" asp-items="ViewBag.Villages" class="form-select select-themed" id="VillageId">
+                    <option value=""> Select Village </option>
+                </select>
+                <span asp-validation-for="VillageId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Gender</label>
+                <select asp-for="GenderId" asp-items="ViewBag.Genders" class="form-select select-themed">
+                    <option value=""> Select Gender </option>
+                </select>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="BirthDate" class="form-label"></label>
+                <input asp-for="BirthDate" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Age" class="form-label"></label>
+                <input asp-for="Age" class="form-control" readonly />
+            </div>
+
+            <div class="col-12 d-flex gap-2 mt-2">
+                <button type="submit" class="btn btn-app"><i class="bi bi-check2-circle me-1"></i>Save</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Ajax Load Districts & Villages dynamically
+        $('#GovernorateId').change(function () {
+            var governorateId = $(this).val();
+            $.getJSON('/Customers/GetDistricts', { governorateId: governorateId }, function (data) {
+                var districtDropdown = $('#DistrictId');
+                districtDropdown.empty();
+                districtDropdown.append('<option value="">-- Select District --</option>');
+                $.each(data, function (i, district) {
+                    districtDropdown.append('<option value="' + district.value + '">' + district.text + '</option>');
+                });
+            });
+        });
+
+        $('#DistrictId').change(function () {
+            var districtId = $(this).val();
+            $.getJSON('/Customers/GetVillages', { districtId: districtId }, function (data) {
+                var villageDropdown = $('#VillageId');
+                villageDropdown.empty();
+                villageDropdown.append('<option value="">-- Select Village --</option>');
+                $.each(data, function (i, village) {
+                    villageDropdown.append('<option value="' + village.value + '">' + village.text + '</option>');
+                });
+            });
+        });
+    </script>
+}
+
